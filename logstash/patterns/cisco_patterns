@@ -1,0 +1,7 @@
+# Custom Patterns
+CISCO_LOG_PREFIX <%{NUMBER:priority}>%{NUMBER:sequence_id}:%{SPACE}%{SYSLOGTIMESTAMP:event_timestamp}: %%{CISCO_REASON:facility}-%{INT:severity}-%{CISCO_REASON:event_type}:
+
+# Main Patterns
+CISCO_LOGIN_INFO %{CISCO_LOG_PREFIX} %{DATA:message} \[user: %{DATA:username}\] \[Source: %{IP:client_ip}\] \[localport: %{INT:destination_port}\](?:\s\[Reason: %{DATA:failure_reason}\])? at %{GREEDYDATA:local_timestamp}
+CISCO_USER_COMMAND %{CISCO_LOG_PREFIX} (?i)User:%{DATA:username}%{SPACE}logged command:%{GREEDYDATA:command}
+CISCO_GENERAL_LOG %{CISCO_LOG_PREFIX} %{GREEDYDATA:message}
