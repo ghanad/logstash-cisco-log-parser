@@ -5,3 +5,6 @@ CISCO_LOG_PREFIX <%{NUMBER:priority}>%{NUMBER:sequence_id}:%{SPACE}%{SYSLOGTIMES
 CISCO_LOGIN_INFO %{CISCO_LOG_PREFIX} %{DATA:message} \[user: %{DATA:username}\] \[Source: %{IP:client_ip}\] \[localport: %{INT:destination_port}\](?:\s\[Reason: %{DATA:failure_reason}\])? at %{GREEDYDATA:local_timestamp}
 CISCO_USER_COMMAND %{CISCO_LOG_PREFIX} (?i)User:%{DATA:username}%{SPACE}logged command:%{GREEDYDATA:command}
 CISCO_GENERAL_LOG %{CISCO_LOG_PREFIX} %{GREEDYDATA:message}
+
+# SFF8472 Threshold Warning Pattern
+CISCO_THRESHOLD_VIOLATION %{CISCO_LOG_PREFIX} %{DATA:interface}: %{DATA:alert_type}; Operating value: %{NUMBER:operating_value} %{DATA:unit}, Threshold value: %{NUMBER:threshold_value} %{DATA:unit}
