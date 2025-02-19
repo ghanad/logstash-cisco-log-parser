@@ -17,3 +17,18 @@ CISCO_LOGIN_INFO %{CISCO_LOG_PREFIX} %{DATA:message} \[user: %{DATA:username}\] 
 CISCO_USER_COMMAND %{CISCO_LOG_PREFIX} (?i)User:%{DATA:username}%{SPACE}logged command:%{GREEDYDATA:command}
 CISCO_GENERAL_LOG %{CISCO_LOG_PREFIX} %{GREEDYDATA:message}
 CISCO_THRESHOLD_VIOLATION %{CISCO_LOG_PREFIX} %{DATA:interface}: %{DATA:alert_type}; Operating value: %{NUMBER:operating_value} %{DATA:unit}, Threshold value: %{NUMBER:threshold_value} %{DATA:unit}
+
+#--------------------
+#   Nexus
+#--------------------
+# Nexus Ethernet port
+NEXUS_ETHPORT <%{NUMBER:priority}>: %{CISCO_TIMESTAMP:event_timestamp} %{DATA:location}: %%{DATA:facility}-%{INT:severity}-%{DATA:event_type}: Interface %{DATA:interface} (?:is %{WORD:status}|(?:, operational %{DATA:parameter} (?:state )?changed to %{DATA:value}))(?: in mode %{WORD:mode})?(?:\s\(%{DATA:reason}\))?
+
+#--------------------
+#    Router
+#--------------------
+# IOS timestamp pattern
+CISCO_IOS_TIMESTAMP \d+w\d+d
+
+# IOS Interface status pattern
+CISCO_IOS_INTERFACE <%{NUMBER:priority}>%{NUMBER:sequence_id}: %{CISCO_IOS_TIMESTAMP:uptime}: %%{DATA:facility}-%{INT:severity}-%{DATA:event_type}: (?:Line protocol on )?Interface %{DATA:interface}, changed state to %{WORD:status}
