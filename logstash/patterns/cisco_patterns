@@ -1,13 +1,7 @@
-# version 1.6.1
+# version 1.6.2
 
 # Custom Patterns
 CISCO_LOG_PREFIX <%{NUMBER:priority}>%{NUMBER:sequence_id}:%{SPACE}\*?%{SYSLOGTIMESTAMP:event_timestamp}(?:.\d{3})?: %%{CISCO_REASON:facility}-%{INT:severity}-%{CISCO_REASON:event_type}:
-
-# Custom Timestamp Pattern for Cisco Logs
-CISCO_TIMESTAMP %{YEAR} %{MONTH} %{MONTHDAY} %{TIME}
-
-# Netstack Error Pattern
-CISCO_NETSTACK_ERROR <%{NUMBER:priority}>: %{CISCO_TIMESTAMP:event_timestamp} %{DATA:location}: %%{CISCO_REASON:facility}-%{INT:severity}-%{CISCO_REASON:event_type}: %{SPACE}%{DATA:process_name} \[%{NUMBER:process_id}\] %{SPACE}%{DATA:function}: %{DATA:error_message} for UDP,Source IP %{IP:source_ip} Dest IP %{IP:destination_ip}, error %{GREEDYDATA:error_description}
 
 # Main Patterns
 CISCO_LOGIN_INFO %{CISCO_LOG_PREFIX} %{DATA:message} \[user: %{DATA:username}\] \[Source: %{IP:client_ip}\] \[localport: %{INT:destination_port}\](?:\s\[Reason: %{DATA:failure_reason}\])? at %{GREEDYDATA:local_timestamp}
@@ -18,11 +12,17 @@ CISCO_THRESHOLD_VIOLATION %{CISCO_LOG_PREFIX} %{DATA:interface}: %{DATA:alert_ty
 #--------------------
 #   Nexus
 #--------------------
+# Custom Timestamp Pattern for Cisco Logs
+NEXUS_TIMESTAMP %{YEAR} %{MONTH} %{MONTHDAY} %{TIME}
+
 # Nexus Ethernet port
-NEXUS_ETHPORT <%{NUMBER:priority}>: %{CISCO_TIMESTAMP:event_timestamp} %{DATA:location}: %%{DATA:facility}-%{INT:severity}-%{DATA:event_type}: Interface %{DATA:interface} (?:is %{WORD:status}|(?:, operational %{DATA:parameter} (?:state )?changed to %{DATA:value}))(?: in mode %{WORD:mode})?(?:\s\(%{DATA:reason}\))?
+NEXUS_ETHPORT <%{NUMBER:priority}>: %{NEXUS_TIMESTAMP:event_timestamp} %{DATA:location}: %%{DATA:facility}-%{INT:severity}-%{DATA:event_type}: Interface %{DATA:interface} (?:is %{WORD:status}|(?:, operational %{DATA:parameter} (?:state )?changed to %{DATA:value}))(?: in mode %{WORD:mode})?(?:\s\(%{DATA:reason}\))?
 
 # LLDP Detection Pattern
-NEXUS_LLDP_DETECT <%{NUMBER:priority}>: %{CISCO_TIMESTAMP:event_timestamp} %{DATA:location}: %%{DATA:facility}-(?:FEX)?(?:%{INT:fex_id})?-%{INT:severity}-%{DATA:event_type}: %{GREEDYDATA:message}
+NEXUS_LLDP_DETECT <%{NUMBER:priority}>: %{NEXUS_TIMESTAMP:event_timestamp} %{DATA:location}: %%{DATA:facility}-(?:FEX)?(?:%{INT:fex_id})?-%{INT:severity}-%{DATA:event_type}: %{GREEDYDATA:message}
+
+# Netstack Error Pattern
+NEXUS_NETSTACK_ERROR <%{NUMBER:priority}>: %{NEXUS_TIMESTAMP:event_timestamp} %{DATA:location}: %%{CISCO_REASON:facility}-%{INT:severity}-%{CISCO_REASON:event_type}: %{SPACE}%{DATA:process_name} \[%{NUMBER:process_id}\] %{SPACE}%{DATA:function}: %{DATA:error_message} for UDP,Source IP %{IP:source_ip} Dest IP %{IP:destination_ip}, error %{GREEDYDATA:error_description}
 
 #--------------------
 #    Router
