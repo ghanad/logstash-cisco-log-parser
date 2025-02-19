@@ -1,4 +1,4 @@
-# version 1.5.5
+# version 1.6
 
 # Custom Patterns
 CISCO_LOG_PREFIX <%{NUMBER:priority}>%{NUMBER:sequence_id}:%{SPACE}\*?%{SYSLOGTIMESTAMP:event_timestamp}(?:.\d{3})?: %%{CISCO_REASON:facility}-%{INT:severity}-%{CISCO_REASON:event_type}:
